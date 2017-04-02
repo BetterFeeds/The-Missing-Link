@@ -72,5 +72,5 @@ func main() {
 		return
 	}
 
-	fmt.Println("\n" + xml.Header + string(buffer))
+	fmt.Println(xml.Header + string(buffer))
 }
