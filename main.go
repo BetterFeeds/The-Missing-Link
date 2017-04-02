@@ -64,6 +64,33 @@ func ParsePage() (atom.Feed, error) {
 		feed.Entry = append(feed.Entry, entry)
 	})
 
+	lastPage, _ := doc.Find(".paging .pageList li").Last().Find("a").Attr("href")
+	lastPageNo := strings.Split(lastPage, "=")[1]
+	lastPageNoInt, _ := strconv.Atoi(lastPageNo)
+
+	feed.Link = append(feed.Link, atom.Link{Href: "https://tml.betterfeeds.org/org/org-1.atom",
+		Rel:      "first",
+		Type:     "application/atom+xml",
+		HrefLang: "en-gb"}, atom.Link{Href: "https://tml.betterfeeds.org/org/org-" + lastPageNo + ".atom",
+		Rel:      "last",
+		Type:     "application/atom+xml",
+		HrefLang: "en-gb"})
+
+	if *pageNo > 1 {
+		feed.Link = append(feed.Link, atom.Link{Href: "https://tml.betterfeeds.org/org/org-" +
+			strconv.Itoa(*pageNo-1) + ".atom",
+			Rel:      "previous",
+			Type:     "application/atom+xml",
+			HrefLang: "en-gb"})
+	}
+	if *pageNo < lastPageNoInt {
+		feed.Link = append(feed.Link, atom.Link{Href: "https://tml.betterfeeds.org/org/org-" +
+			strconv.Itoa(*pageNo+1) + ".atom",
+			Rel:      "next",
+			Type:     "application/atom+xml",
+			HrefLang: "en-gb"})
+	}
+
 	return feed, nil
 }
 
