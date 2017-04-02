@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/xml"
-	"log"
+	"fmt"
 	"strings"
 	"time"
 
@@ -68,8 +68,9 @@ func main() {
 
 	buffer, err := xml.MarshalIndent(feed, "", "	")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 
-	log.Println("\n" + xml.Header + string(buffer))
+	fmt.Println("\n" + xml.Header + string(buffer))
 }
