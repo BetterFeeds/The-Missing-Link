@@ -2,13 +2,17 @@ package main
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/nenadl/atom"
 )
+
+var pageNo = flag.Int("pageno", 1, "The page to return")
 
 func ParsePage() (atom.Feed, error) {
 	feed := atom.Feed{Logo: "https://www.openrightsgroup.org/assets/site/org/images/logo.png",
@@ -17,16 +21,16 @@ func ParsePage() (atom.Feed, error) {
 		Title:   "Open Rights Group",
 		Updated: atom.Time(time.Now())}
 
-	feed.Link = []atom.Link{atom.Link{Href: "https://www.openrightsgroup.org/blog/",
+	feed.Link = []atom.Link{atom.Link{Href: "https://www.openrightsgroup.org/blog/?page=" + strconv.Itoa(*pageNo),
 		Rel:      "alternate",
 		Type:     "text/html",
 		HrefLang: "en-gb"},
-		atom.Link{Href: "https://tml.betterfeeds.org/org.atom",
+		atom.Link{Href: "https://tml.betterfeeds.org/org/org-" + strconv.Itoa(*pageNo) + ".atom",
 			Rel:      "self",
 			Type:     "application/atom+xml",
 			HrefLang: "en-gb"}}
 
-	doc, err := goquery.NewDocument("https://www.openrightsgroup.org/blog/")
+	doc, err := goquery.NewDocument("https://www.openrightsgroup.org/blog/?page=" + strconv.Itoa(*pageNo))
 	if err != nil {
 		return atom.Feed{}, err
 	}
@@ -64,6 +68,8 @@ func ParsePage() (atom.Feed, error) {
 }
 
 func main() {
+	flag.Parse()
+
 	feed, _ := ParsePage()
 
 	buffer, err := xml.MarshalIndent(feed, "", "	")
