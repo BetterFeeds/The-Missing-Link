@@ -16,6 +16,7 @@ func main() {
 
 	r.HandleFunc("/{source}/{id}/{page:[0-9]+}.atom", queryDecode)
 	r.HandleFunc("/{source}/{page:[0-9]+}.atom", queryDecode)
+	r.HandleFunc("/{source}.atom", queryDecode)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
@@ -24,7 +25,11 @@ func queryDecode(response http.ResponseWriter, request *http.Request) {
 	var source sources.Source
 
 	vars := mux.Vars(request)
-	page, _ := strconv.ParseInt(vars["page"], 10, 0)
+	page := 1
+	if vars["page"] != "" {
+		pageI, _ := strconv.ParseInt(vars["page"], 10, 0)
+		page = int(pageI)
+	}
 
 	switch vars["source"] {
 	case "org":
