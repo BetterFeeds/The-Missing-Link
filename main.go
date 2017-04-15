@@ -21,7 +21,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
-func queryDecode(response http.ResponseWriter, request *http.Request) {
+func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
 	var source sources.Source
 
 	vars := mux.Vars(request)
@@ -37,24 +37,24 @@ func queryDecode(response http.ResponseWriter, request *http.Request) {
 		break
 	default:
 		log.Printf("Unhandled URL: %s\n", request.URL)
-		http.NotFound(response, request)
+		http.Error(responseWriter, "Feed not found", http.StatusNotFound)
 		return
 	}
 
 	feed, err := source.CreateFeed(vars["id"], int(page))
 	if err != nil {
 		log.Printf("Error creating feed: %s\n", err)
-		http.NotFound(response, request)
+		http.Error(responseWriter, "Feed creation error", http.StatusInternalServerError)
 		return
 	}
 
-	response.Header().Set("Content-Type", "application/atom+xml")
-	encoder := xml.NewEncoder(response)
+	responseWriter.Header().Set("Content-Type", "application/atom+xml")
+	encoder := xml.NewEncoder(responseWriter)
 	encoder.Indent("", "	")
 	err = encoder.Encode(feed)
 	if err != nil {
 		log.Printf("Error encoding feed: %s\n", err)
-		http.NotFound(response, request)
+		http.Error(responseWriter, "Feed encoding error", http.StatusInternalServerError)
 		return
 	}
 }
