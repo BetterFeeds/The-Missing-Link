@@ -15,7 +15,7 @@ type Org struct {
 func (org Org) CreateFeed(id string, page int) (atom.Feed, error) {
 	feed := atom.Feed{Logo: "https://www.openrightsgroup.org/assets/site/org/images/logo.png",
 		Icon:    "https://www.openrightsgroup.org/assets/site/org/images/favicon.ico",
-		ID:      "tag:openrightsgroup.org,2017-04-02:/blog/",
+		ID:      "tag:tml.betterfeeds.org,2017-04-02:/openrightsgroup/",
 		Title:   "Open Rights Group",
 		Updated: atom.Time(time.Now())}
 
