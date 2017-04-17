@@ -55,6 +55,7 @@ func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 
 	responseWriter.Header().Set("Content-Type", "application/atom+xml")
+	responseWriter.Header().Set("Cache-Control", "public, max-age=3600")
 	encoder := xml.NewEncoder(responseWriter)
 	encoder.Indent("", "	")
 	err = encoder.Encode(feed)
