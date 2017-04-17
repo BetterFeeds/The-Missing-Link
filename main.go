@@ -18,7 +18,7 @@ func main() {
 	r.HandleFunc("/{source}/{page:[0-9]+}.atom", queryDecode)
 	r.HandleFunc("/{source}.atom", queryDecode)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe("127.0.0.1:8080", r))
 }
 
 func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
