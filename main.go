@@ -38,9 +38,9 @@ func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
 	case "imdb":
 		source = sources.Imdb{}
 		break
-	case "iplayer":
-		source = sources.Iplayer{}
-		break
+	//case "iplayer":
+	//	source = sources.Iplayer{}
+	//	break
 	default:
 		log.Printf("Unhandled URL: %s\n", request.URL)
 		http.Error(responseWriter, "Feed not found", http.StatusNotFound)
