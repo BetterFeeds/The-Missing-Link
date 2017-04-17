@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Cj-Malone/feed-org/sources"
+	"github.com/BetterFeeds/The-Missing-Link/sources"
 	"github.com/gorilla/mux"
 	//"github.com/nenadl/atom"
 )
@@ -72,5 +72,5 @@ func homePage(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-Type", "text/plain")
 	responseWriter.Header().Set("Cache-Control", "public, max-age=3600")
 
-	w.Write([]byte("The Missing Link provides feeds for Open Rights Group and IMDb.\n"))
+	responseWriter.Write([]byte("The Missing Link provides feeds for Open Rights Group and IMDb.\n"))
 }
