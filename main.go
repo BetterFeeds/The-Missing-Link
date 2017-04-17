@@ -14,6 +14,8 @@ import (
 func main() {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", homePage)
+
 	r.HandleFunc("/{source}/{id}/{page:[0-9]+}.atom", queryDecode)
 	r.HandleFunc("/{source}/{page:[0-9]+}.atom", queryDecode)
 	r.HandleFunc("/{source}.atom", queryDecode)
@@ -64,4 +66,11 @@ func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
 		http.Error(responseWriter, "Feed encoding error", http.StatusInternalServerError)
 		return
 	}
+}
+
+func homePage(responseWriter http.ResponseWriter, request *http.Request) {
+	responseWriter.Header().Set("Content-Type", "text/plain")
+	responseWriter.Header().Set("Cache-Control", "public, max-age=3600")
+
+	w.Write([]byte("The Missing Link provides feeds for Open Rights Group and IMDb.\n"))
 }
