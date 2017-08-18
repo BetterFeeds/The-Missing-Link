@@ -40,6 +40,9 @@ func queryDecode(responseWriter http.ResponseWriter, request *http.Request) {
 	case "imdb":
 		source = sources.Imdb{}
 		break
+	case "alephsecurity":
+		source = sources.AlephSecurity{}
+		break
 	//case "iplayer":
 	//	source = sources.Iplayer{}
 	//	break
